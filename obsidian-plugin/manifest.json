@@ -1,0 +1,10 @@
+{
+	"id": "obsidian-auto-linker",
+	"name": "Auto Link Keywords",
+	"version": "1.0.0",
+	"minAppVersion": "0.15.0",
+	"description": "Extract keywords using Local LLM and create backlinks automatically.",
+	"author": "Me",
+	"authorUrl": "https://github.com/",
+	"isDesktopOnly": true
+}

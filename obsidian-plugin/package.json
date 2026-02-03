@@ -1,0 +1,21 @@
+{
+  "name": "obsidian-auto-linker",
+  "version": "1.0.0",
+  "description": "Auto generate backlinks using local LLM",
+  "main": "main.js",
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "keywords": ["obsidian", "plugin", "llm"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "obsidian": "latest",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "tslib": "^2.6.2"
+  }
+}
