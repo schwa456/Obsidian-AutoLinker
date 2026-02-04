@@ -1,23 +1,11 @@
-/**
- * Obsidian Auto-Linker Plugin.
- * 
- * Automatically extracts keywords from notes and creates backlinks
- * using a local LLM backend server.
- */
-
-import { Editor, MarkdownView, MarkdownFileInfo, Notice, Plugin } from 'obsidian';
+import { Editor, MarkdownView, MarkdownFileInfo, Notice, Plugin, WorkspaceLeaf } from 'obsidian';
 import { AutoLinkerSettings, DEFAULT_SETTINGS, AutoLinkerSettingTab } from './settings';
 import { fetchKeywords } from './api-client';
 import { logError } from './utils';
+import {PaperDropView, VIEW_TYPE_PAPER_DROP} from "./view";
 
-/**
- * Main plugin class for Obsidian Auto-Linker.
- * 
- * Provides functionality to automatically extract keywords from markdown notes
- * and convert them to Obsidian backlinks using LLM-based analysis.
- */
+
 export default class AutoLinkerPlugin extends Plugin {
-    // [Fix 1] 느낌표(!)를 붙여서 "나중에 무조건 할당된다"고 TS에게 알림
     settings!: AutoLinkerSettings;
 
     /**
@@ -29,8 +17,13 @@ export default class AutoLinkerPlugin extends Plugin {
 
         this.addSettingTab(new AutoLinkerSettingTab(this.app, this));
 
-        this.addRibbonIcon('network', 'Auto Link Keywords', () => {
-            this.processCurrentNote();
+        this.registerView(
+            VIEW_TYPE_PAPER_DROP,
+            (leaf) => new PaperDropView(leaf)
+        );
+
+        this.addRibbonIcon('book-open', 'AI Paper Processor', () => {
+            this.activateView();
         });
 
         this.addCommand({
@@ -137,5 +130,25 @@ export default class AutoLinkerPlugin extends Plugin {
      */
     async saveSettings() {
         await this.saveData(this.settings);
+    }
+
+    async activateView() {
+        const { workspace } = this.app;
+
+        let leaf: WorkspaceLeaf | null = null;
+        const leaves = workspace.getLeavesOfType(VIEW_TYPE_PAPER_DROP);
+
+        if (leaves.length > 0) {
+            leaf = leaves[0]
+        } else {
+            leaf = workspace.getRightLeaf(false);
+            if (leaf) {
+                await leaf.setViewState({ type: VIEW_TYPE_PAPER_DROP, active: true});
+            }
+        }
+
+        if (leaf) {
+            workspace.revealLeaf(leaf);
+        }
     }
 }

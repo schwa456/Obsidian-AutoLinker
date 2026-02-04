@@ -4,14 +4,19 @@
   "description": "Auto generate backlinks using local LLM",
   "main": "main.js",
   "scripts": {
-    "dev": "tsc -w",
-    "build": "tsc"
+    "dev": "esbuild src/main.ts --bundle --platform=node --target=es2018 --external:obsidian --external:electron --outfile=main.js --watch",
+    "build": "esbuild src/main.ts --bundle --platform=node --target=es2018 --external:obsidian --external:electron --outfile=main.js"
   },
-  "keywords": ["obsidian", "plugin", "llm"],
+  "keywords": [
+    "obsidian",
+    "plugin",
+    "llm"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^16.11.6",
+    "esbuild": "^0.27.2",
     "obsidian": "latest",
     "typescript": "^5.2.2"
   },

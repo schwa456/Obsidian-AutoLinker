@@ -1,0 +1,21 @@
+.paper-drop-zone {
+    border: 2px dashed var(--text-muted);
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    background-color: var(--background-secondary);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.paper-drop-zone.hover {
+    border-color: var(--interactive-accent);
+    background-color: var(--background-primary-alt);
+    transform: scale(1.02);
+}
+
+.drop-icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
