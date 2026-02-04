@@ -1,11 +1,29 @@
+/**
+ * Obsidian Auto-Linker Plugin.
+ * 
+ * Automatically extracts keywords from notes and creates backlinks
+ * using a local LLM backend server.
+ */
+
 import { Editor, MarkdownView, MarkdownFileInfo, Notice, Plugin } from 'obsidian';
 import { AutoLinkerSettings, DEFAULT_SETTINGS, AutoLinkerSettingTab } from './settings';
 import { fetchKeywords } from './api-client';
+import { logError } from './utils';
 
+/**
+ * Main plugin class for Obsidian Auto-Linker.
+ * 
+ * Provides functionality to automatically extract keywords from markdown notes
+ * and convert them to Obsidian backlinks using LLM-based analysis.
+ */
 export default class AutoLinkerPlugin extends Plugin {
     // [Fix 1] 느낌표(!)를 붙여서 "나중에 무조건 할당된다"고 TS에게 알림
     settings!: AutoLinkerSettings;
 
+    /**
+     * Called when the plugin is loaded.
+     * Initializes settings, UI components, and commands.
+     */
     async onload() {
         await this.loadSettings();
 
@@ -25,6 +43,15 @@ export default class AutoLinkerPlugin extends Plugin {
         });
     }
 
+    /**
+     * Processes the current note for keyword extraction and linking.
+     * 
+     * Reads the active note, sends it to the backend for keyword extraction,
+     * and applies backlinks to the extracted keywords.
+     * 
+     * @param editor - Optional editor instance
+     * @param view - Optional view instance (MarkdownView or MarkdownFileInfo)
+     */
     // [Fix 3] 인자 타입을 확장하고, null 가능성을 명시
     async processCurrentNote(editor?: Editor, view?: MarkdownView | MarkdownFileInfo | null) {
         // 뷰가 넘어오지 않았으면 현재 활성 뷰를 가져옴
@@ -65,6 +92,16 @@ export default class AutoLinkerPlugin extends Plugin {
         }
     }
 
+    /**
+     * Applies backlinks to keywords in the given text.
+     * 
+     * Wraps matching keywords with Obsidian's wiki-link syntax [[keyword]].
+     * Skips keywords that are already linked or prefixed with #.
+     * 
+     * @param text - The original text content
+     * @param keywords - Array of keywords to link
+     * @returns Text with keywords converted to backlinks
+     */
     applyLinks(text: string, keywords: string[]): string {
         let newText = text;
 
@@ -81,17 +118,23 @@ export default class AutoLinkerPlugin extends Plugin {
 
                 newText = newText.replace(regex, '[[$1]]');
             } catch (e) {
-                console.error(`Error processing keyword "${keyword}":`, e);
+                logError(`Error processing keyword "${keyword}":`, e);
             }
         });
 
         return newText;
     }
 
+    /**
+     * Loads plugin settings from disk.
+     */
     async loadSettings() {
         this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
     }
 
+    /**
+     * Saves plugin settings to disk.
+     */
     async saveSettings() {
         await this.saveData(this.settings);
     }

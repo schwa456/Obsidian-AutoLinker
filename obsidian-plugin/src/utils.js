@@ -1,2 +1,31 @@
 "use strict";
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXRpbHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJ1dGlscy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlc0NvbnRlbnQiOlsiIl19
+/**
+ * Utility Constants and Functions Module.
+ *
+ * This module contains shared constants and utility functions
+ * used across the Obsidian Auto-Linker plugin.
+ */
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PLUGIN_NAME = exports.TEXT_MAX_LENGTH = void 0;
+exports.logDebug = logDebug;
+exports.logError = logError;
+/** Maximum text length to send to the backend server for processing. */
+exports.TEXT_MAX_LENGTH = 4000;
+/** Plugin name for logging purposes. */
+exports.PLUGIN_NAME = 'AutoLinker';
+/**
+ * Creates a console logger with plugin prefix.
+ * @param message - The message to log
+ */
+function logDebug(message) {
+    console.log(`[${exports.PLUGIN_NAME}] ${message}`);
+}
+/**
+ * Creates a console error logger with plugin prefix.
+ * @param message - The error message to log
+ * @param error - Optional error object
+ */
+function logError(message, error) {
+    console.error(`[${exports.PLUGIN_NAME}] ${message}`, error || '');
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXRpbHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJ1dGlscy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQUE7Ozs7O0dBS0c7OztBQVlILDRCQUVDO0FBT0QsNEJBRUM7QUFyQkQsd0VBQXdFO0FBQzNELFFBQUEsZUFBZSxHQUFHLElBQUksQ0FBQztBQUVwQyx3Q0FBd0M7QUFDM0IsUUFBQSxXQUFXLEdBQUcsWUFBWSxDQUFDO0FBRXhDOzs7R0FHRztBQUNILFNBQWdCLFFBQVEsQ0FBQyxPQUFlO0lBQ3BDLE9BQU8sQ0FBQyxHQUFHLENBQUMsSUFBSSxtQkFBVyxLQUFLLE9BQU8sRUFBRSxDQUFDLENBQUM7QUFDL0MsQ0FBQztBQUVEOzs7O0dBSUc7QUFDSCxTQUFnQixRQUFRLENBQUMsT0FBZSxFQUFFLEtBQWU7SUFDckQsT0FBTyxDQUFDLEtBQUssQ0FBQyxJQUFJLG1CQUFXLEtBQUssT0FBTyxFQUFFLEVBQUUsS0FBSyxJQUFJLEVBQUUsQ0FBQyxDQUFDO0FBQzlELENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcclxuICogVXRpbGl0eSBDb25zdGFudHMgYW5kIEZ1bmN0aW9ucyBNb2R1bGUuXHJcbiAqIFxyXG4gKiBUaGlzIG1vZHVsZSBjb250YWlucyBzaGFyZWQgY29uc3RhbnRzIGFuZCB1dGlsaXR5IGZ1bmN0aW9uc1xyXG4gKiB1c2VkIGFjcm9zcyB0aGUgT2JzaWRpYW4gQXV0by1MaW5rZXIgcGx1Z2luLlxyXG4gKi9cclxuXHJcbi8qKiBNYXhpbXVtIHRleHQgbGVuZ3RoIHRvIHNlbmQgdG8gdGhlIGJhY2tlbmQgc2VydmVyIGZvciBwcm9jZXNzaW5nLiAqL1xyXG5leHBvcnQgY29uc3QgVEVYVF9NQVhfTEVOR1RIID0gNDAwMDtcclxuXHJcbi8qKiBQbHVnaW4gbmFtZSBmb3IgbG9nZ2luZyBwdXJwb3Nlcy4gKi9cclxuZXhwb3J0IGNvbnN0IFBMVUdJTl9OQU1FID0gJ0F1dG9MaW5rZXInO1xyXG5cclxuLyoqXHJcbiAqIENyZWF0ZXMgYSBjb25zb2xlIGxvZ2dlciB3aXRoIHBsdWdpbiBwcmVmaXguXHJcbiAqIEBwYXJhbSBtZXNzYWdlIC0gVGhlIG1lc3NhZ2UgdG8gbG9nXHJcbiAqL1xyXG5leHBvcnQgZnVuY3Rpb24gbG9nRGVidWcobWVzc2FnZTogc3RyaW5nKTogdm9pZCB7XHJcbiAgICBjb25zb2xlLmxvZyhgWyR7UExVR0lOX05BTUV9XSAke21lc3NhZ2V9YCk7XHJcbn1cclxuXHJcbi8qKlxyXG4gKiBDcmVhdGVzIGEgY29uc29sZSBlcnJvciBsb2dnZXIgd2l0aCBwbHVnaW4gcHJlZml4LlxyXG4gKiBAcGFyYW0gbWVzc2FnZSAtIFRoZSBlcnJvciBtZXNzYWdlIHRvIGxvZ1xyXG4gKiBAcGFyYW0gZXJyb3IgLSBPcHRpb25hbCBlcnJvciBvYmplY3RcclxuICovXHJcbmV4cG9ydCBmdW5jdGlvbiBsb2dFcnJvcihtZXNzYWdlOiBzdHJpbmcsIGVycm9yPzogdW5rbm93bik6IHZvaWQge1xyXG4gICAgY29uc29sZS5lcnJvcihgWyR7UExVR0lOX05BTUV9XSAke21lc3NhZ2V9YCwgZXJyb3IgfHwgJycpO1xyXG59XHJcbiJdfQ==

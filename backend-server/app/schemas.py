@@ -1,3 +1,9 @@
+"""
+Pydantic Schema Definitions.
+
+This module defines request and response models for the API endpoints.
+"""
+
 from pydantic import BaseModel, Field
 from typing import List, Optional
 

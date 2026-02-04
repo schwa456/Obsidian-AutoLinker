@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Python Backend Server
+  backend:
+    build: ./backend-server
+    container_name: obsidian-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      # 1. 개발 중 코드 수정 시 바로 반영 (Hot Reload)
+      - ./backend-server:/app
+      
+      # 2. [중요] 호스트의 옵시디언 볼트를 컨테이너 내부로 마운트
+      # .env 파일에 정의된 경로를 사용합니다.
+      - ${OBSIDIAN_VAULT_PATH}:/vault
+    environment:
+      # 호스트의 Ollama에 접근하기 위한 특수 주소
+      - LLM_BASE_URL=http://host.docker.internal:11434/v1
+      - LLM_API_KEY=ollama
+      - LLM_MODEL_NAME=${LLM_MODEL_NAME}
+      # 컨테이너 내부에서는 볼트 경로가 /vault로 고정됨
+      - OBSIDIAN_VAULT_PATH_INTERNAL=/vault
+      # AMD GPU 우회 설정 (혹시 컨테이너가 GPU를 감지할 경우 대비)
+      - HSA_OVERRIDE_GFX_VERSION=10.3.0
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+# Ollama는 Windows Native로 실행 중이라고 가정 (AMD GPU 효율성 때문)

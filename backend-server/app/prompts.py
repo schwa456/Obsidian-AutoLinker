@@ -1,4 +1,11 @@
-# app/prompts.py
+"""
+Prompt Templates Module.
+
+This module contains prompt templates for LLM-based keyword extraction.
+Prompts are designed to extract high-quality keywords suitable for
+Obsidian backlinking.
+"""
+
 
 def get_system_prompt() -> str:
     return """

@@ -21,6 +21,32 @@ export class AutoLinkerSettingTab extends PluginSettingTab {
         this.plugin = plugin;
     }
 
+    /**
+     * Creates an async handler for string setting changes.
+     * @param key - The setting key to update
+     */
+    private createStringHandler(key: keyof AutoLinkerSettings): (value: string) => Promise<void> {
+        return async (value: string) => {
+            (this.plugin.settings[key] as string) = value;
+            await this.plugin.saveSettings();
+        };
+    }
+
+    /**
+     * Creates an async handler for numeric setting changes.
+     * Validates that the input is a valid number before saving.
+     * @param key - The setting key to update
+     */
+    private createNumberHandler(key: keyof AutoLinkerSettings): (value: string) => Promise<void> {
+        return async (value: string) => {
+            const num = Number(value);
+            if (!isNaN(num)) {
+                (this.plugin.settings[key] as number) = num;
+                await this.plugin.saveSettings();
+            }
+        };
+    }
+
     display(): void {
         const { containerEl } = this;
         containerEl.empty();
@@ -33,10 +59,7 @@ export class AutoLinkerSettingTab extends PluginSettingTab {
             .addText(text => text
                 .setPlaceholder('http://127.0.0.1:5000/extract')
                 .setValue(this.plugin.settings.apiUrl)
-                .onChange(async (value) => {
-                    this.plugin.settings.apiUrl = value;
-                    await this.plugin.saveSettings();
-                }));
+                .onChange(this.createStringHandler('apiUrl')));
 
         new Setting(containerEl)
             .setName('Ignore Threshold')
@@ -44,13 +67,7 @@ export class AutoLinkerSettingTab extends PluginSettingTab {
             .addText(text => text
                 .setPlaceholder('10')
                 .setValue(String(this.plugin.settings.ignoreThreshold))
-                .onChange(async (value) => {
-                    const num = Number(value);
-                    if (!isNaN(num)) {
-                        this.plugin.settings.ignoreThreshold = num;
-                        await this.plugin.saveSettings();
-                    }
-                }));
+                .onChange(this.createNumberHandler('ignoreThreshold')));
 
         new Setting(containerEl)
             .setName('Max Keywords')
@@ -58,12 +75,6 @@ export class AutoLinkerSettingTab extends PluginSettingTab {
             .addText(text => text
                 .setPlaceholder('5')
                 .setValue(String(this.plugin.settings.maxKeywords))
-                .onChange(async (value) => {
-                    const num = Number(value);
-                    if (!isNaN(num)) {
-                        this.plugin.settings.maxKeywords = num;
-                        await this.plugin.saveSettings();
-                    }
-                }));
+                .onChange(this.createNumberHandler('maxKeywords')));
     }
 }
